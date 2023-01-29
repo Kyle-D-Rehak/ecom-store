@@ -1,46 +1,59 @@
-import { Card, 
-         CardBody, 
-         CardFooter, 
-         Image, 
-         Stack, 
-         Heading, 
-         Text, 
-         Divider, 
-         Button, 
-         ButtonGroup 
-        } from '@chakra-ui/react';
+import { 
+    Flex, 
+    Spacer,
+    Image, 
+    Heading, 
+    Text, 
+    Divider, 
+    Button, 
+} from '@chakra-ui/react';
 
 const ProductCard = (props) => {
+
+    const addItem = (props) => {
+        console.log('initial value');
+        console.log(props.cart);
+        let wasUpdated = false;
+        const newCart = [...props.cart];
+        newCart.forEach(item => {
+          console.log('item');
+          console.log(item);
+          if(item.id === props.id) {
+            item.qty++;
+            props.setCart(newCart);
+            wasUpdated = true;
+          }
+        });
+        if(!wasUpdated){
+          newCart.push({id: props.id, src: props.src, heading: props.heading, price: props.price, qty: 1});
+          props.setCart(newCart);
+        }
+        console.log('result');
+        console.log(newCart);
+    }
+
     return (
-        <Card maxW='xs'>
-            <CardBody>
+        <Flex flexDirection='column' maxW='sm' boxShadow='base' borderRadius='lg' borderWidth='1px' padding='1rem' gap='.5rem'>
+              <Spacer />
               <Image
                 src={props.src}
                 alt={props.description}
-                borderRadius='lg'
+                maxH='sm'
               />
-              <Stack mt='6' spacing='3'>
+              <Spacer />
                 <Heading size='md'>{props.heading}</Heading>
-                <Text>
+                <Text noOfLines={5} align='left'>
                     {props.disc}
                 </Text>
-                <Text color='blue.600' fontSize='2xl'>
-                  {props.price}
+                <Spacer />
+                <Text color='blue.600' fontSize='2xl' align='center'>
+                  {`$${props.price.toFixed(2)}`}
                 </Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <ButtonGroup spacing='2'>
-                <Button variant='solid' colorScheme='blue'>
-                  Buy now
-                </Button>
-                <Button variant='ghost' colorScheme='blue'>
+              <Divider />
+                <Button variant='ghost' colorScheme='blue' onClick={() => addItem(props)}>
                   Add to cart
                 </Button>
-              </ButtonGroup>
-            </CardFooter>
-        </Card>
+        </Flex>
     )
 }
 

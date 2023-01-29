@@ -4,12 +4,12 @@ import Shop from "./Shop";
 import Home from "./Home";
 
 
-const RouteSwitch = () => {
+const RouteSwitch = (props) => {
     return (
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/cart" element={<Cart />} />
+                <Route path="/shop" element={<Shop cart={props.cart} setCart={props.setCart} />} />
+                <Route path="/cart" element={<Cart cart={props.cart} setCart={props.setCart} />} />
             </Routes>
     )
 }

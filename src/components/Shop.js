@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Spinner, SimpleGrid } from '@chakra-ui/react'
+import { Spinner, SimpleGrid, Box } from '@chakra-ui/react'
 import ProductCard from "./ProductCard";
 
 
-const Shop = () => {
+const Shop = (props) => {
     const [ data, setData ] = useState(null);
     const [ loading, setLoading ] = useState(true);
 
@@ -28,7 +28,7 @@ const Shop = () => {
 
     return (
         loading
-            ? <div>
+            ? <Box marginTop='6rem'>
                 <Spinner
                   thickness='4px'
                   speed='0.65s'
@@ -36,16 +36,19 @@ const Shop = () => {
                   color='blue.500'
                   size='xl'
                 />
-              </div>
-            : <SimpleGrid minChildWidth='sm' gap={6}>
+              </Box>
+            : <SimpleGrid minChildWidth='sm' gap={6} margin='5rem 2rem 2rem 4rem' >
                 {data.map(product => {
                     return (
                         <ProductCard 
                             key={product.id}
+                            id={product.id}
                             src={product.image}
                             heading={product.title}
                             disc={product.description}
                             price={product.price}
+                            setCart={props.setCart}
+                            cart={props.cart}
                         />
                     )})
                     }
