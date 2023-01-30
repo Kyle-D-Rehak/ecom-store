@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
     Flex, 
     Spacer,
@@ -6,30 +7,36 @@ import {
     Text, 
     Divider, 
     Button, 
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
 } from '@chakra-ui/react';
 
 const ProductCard = (props) => {
 
+    const [ qty, setQty ] = useState(1);
+
+    const handleChange = (_, num) => {
+      setQty(num);
+    }
+
     const addItem = (props) => {
-        console.log('initial value');
-        console.log(props.cart);
         let wasUpdated = false;
         const newCart = [...props.cart];
         newCart.forEach(item => {
-          console.log('item');
-          console.log(item);
           if(item.id === props.id) {
-            item.qty++;
+            item.qty += qty;
             props.setCart(newCart);
             wasUpdated = true;
           }
         });
         if(!wasUpdated){
-          newCart.push({id: props.id, src: props.src, heading: props.heading, price: props.price, qty: 1});
+          newCart.push({id: props.id, src: props.src, heading: props.heading, price: props.price, qty: qty});
           props.setCart(newCart);
         }
-        console.log('result');
-        console.log(newCart);
+        setQty(1);
     }
 
     return (
@@ -50,9 +57,21 @@ const ProductCard = (props) => {
                   {`$${props.price.toFixed(2)}`}
                 </Text>
               <Divider />
+              <Flex>
+                <Spacer />
+                <NumberInput  maxW={20} onChange={handleChange} value={qty} min={1}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+                <Spacer />
                 <Button variant='ghost' colorScheme='blue' onClick={() => addItem(props)}>
                   Add to cart
                 </Button>
+              <Spacer />
+              </Flex>
         </Flex>
     )
 }
